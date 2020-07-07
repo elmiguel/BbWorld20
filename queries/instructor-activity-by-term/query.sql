@@ -18,4 +18,4 @@ inner join cdm_lms.person_course lpc
     on lpc.id = lca.person_course_id
     and lpc.course_role = 'I'
 group by term
-having term like '%{term}%'
+having term in ({term})

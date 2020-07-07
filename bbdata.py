@@ -127,9 +127,23 @@ def main():
 
 
     # Time spent in Learn
-    tsil = load_query('time-spent-in-learn')
-    print(tsil.head(10))
-    # plt.show()
+    # tsil = load_query('time-spent-in-learn')
+    # print(tsil.head(10))
+    iabt = load_query('instructor-activity-by-term')
+    fig, ax = plt.subplots()
+    tabs = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:black', 'tab:purple']
+    for i, color in enumerate(iabt['term']):
+        x = iabt['enrolment_count']
+        y = iabt['courses_accessed']
+        scale = iabt['course_accesses'] * .5
+        ax.scatter(x, y, c=tabs[i], s=scale, label=color,
+                alpha=0.3, edgecolors='none')
+
+
+    ax.legend()
+    ax.grid(True)
+    plt.savefig('./exports/InstructorActivityByTerm.svg')
+    plt.show()
 
     for db, session in sessions.items():
         session.close()

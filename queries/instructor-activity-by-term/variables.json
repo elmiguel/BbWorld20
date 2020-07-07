@@ -1,5 +1,5 @@
 {
     "variables": {
-        "term": "2020"
+        "term": ["Summer 2019", "Fall 2019", "Spring 2020", "Summer 2020"]
     }
 }
