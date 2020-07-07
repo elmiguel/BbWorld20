@@ -28,7 +28,7 @@ If all goes well, you should be able to follow along and run the provided script
 * Second, create a query.sql file
     - You can use {} opened and closed curly brackets to inject variables
 * Third, create a variables.json files with the following syntax:
-```JSON
+```python
 {
     "variables": {
             "your key": "string" || int || [list] || obj{}
