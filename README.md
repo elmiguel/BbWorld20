@@ -4,13 +4,13 @@
 ### Setup
 First we need to install the snowflake-sqlalchemy module (along with some other modules). Use the following command in your terminal of choice:
 
-```
+```s
 python3 -m pip install --upgrade --user snowflake-sqlalchemy panda matplotlib numpy docopt pymongo
 ```
 
 Or you can just do the following to allow the requirements.txt do the work for you:
 
-```
+```s
 python3 -m pip install --user -r requirements.txt
 ```
 
@@ -28,7 +28,7 @@ If all goes well, you should be able to follow along and run the provided script
 * Second, create a query.sql file
     - You can use {} opened and closed curly brackets to inject variables
 * Third, create a variables.json files with the following syntax:
-```
+```JSON
 {
     "variables": {
             "your key": "string" || int || [list] || obj{}
