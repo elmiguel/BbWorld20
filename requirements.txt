@@ -1,0 +1,6 @@
+snowflake-sqlalchemy
+panda
+matplotlib
+numpy
+docopt
+pymongo

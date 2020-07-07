@@ -41,7 +41,7 @@ def load_query(query_name, chunk_size=None, refresh=False, as_dict=False):
     if not refresh and Path(data_path).is_file():
         return pd.read_csv(data_path)
     else:
-        print ("File not exist")
+        print ("Data file does not exist")
         with open(f"./queries/{query_name}/query.sql") as qf:
             query = qf.read()
 
