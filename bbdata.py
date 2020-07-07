@@ -33,10 +33,11 @@ def to_dict(result):
     return [dict(zip(row.keys(), row)) for row in result]
 
 
-def load_query(query_name, chunksize=None, refresh=False):
+def load_query(query_name, chunk_size=None, refresh=False, as_dict=False):
     query = None
     variables = None
     data_path = f"./queries/{query_name}/data.csv"
+    
     if not refresh and Path(data_path).is_file():
         return pd.read_csv(data_path)
     else:
@@ -49,13 +50,15 @@ def load_query(query_name, chunksize=None, refresh=False):
 
         for k, v in variables.items():
             query = query.replace('{' + k + '}', build_type(v))
-        df = pd.read_sql_query(query, engines['bbdata'], chunksize=chunksize)
-        df.to_csv(data_path, index=None)
-        # direct via sqlalchemy engine
-        # return to_dict(sessions['bbdata'].execute(query))
 
+        if as_dict:
+            # direct via sqlalchemy engine
+            return to_dict(sessions['bbdata'].execute(query))
+        else:
             # using pandas
-        return df
+            df = pd.read_sql_query(query, engines['bbdata'], chunksize=chunk_size)
+            df.to_csv(data_path, index=None)
+            return df
 
 def build_type(value):
     if type(value) == dict:
@@ -63,7 +66,7 @@ def build_type(value):
     if type(value) == list:
         return ','.join([build_type(i) for i in value])
     if type(value) == int:
-        return value
+        return str(value)
     if type(value) == str:
         return f"'{value}'"
 
@@ -74,8 +77,7 @@ def main():
     # print(load_user)
 
     ###### Load Users Activity
-    # load_user_activity = load_query('get-user-activity', 10)
-    
+    # load_user_activity = load_query('get-user-activity', chunk_size=10, as_dict=True)
     # _print = True
     # for page in load_user_activity:
     #     if _print:
@@ -83,6 +85,9 @@ def main():
     #         _print = False
     #     else:
     #         break
+
+    # load_user_activity = load_query('get-user-activity')
+    # print(load_user_activity.head(10))
 
     ###### Load Users Activity alt
     # load_user_activity = load_query('get-user-activity')
@@ -109,16 +114,22 @@ def main():
     # plt.savefig('./exports/GetUserCourseActivity.svg')
 
     ###### Load Users Course Activity Over Time (dates)
-    lucaot = load_query('get-user-course-activity-over-time', refresh=False)
-    data = lucaot[lucaot.name.str.contains('SLS1101-20191-21-M-003')].plot(
-        x='name',
-        y='duration_minutes',
-        kind='bar'
-    )
-    print(data)
+    
+    # lucaot = load_query('get-user-course-activity-over-time', refresh=False)
+    # data = lucaot[lucaot.name.str.contains('SLS1101-20191-21-M-003')].plot(
+    #     x='name',
+    #     y='duration_minutes',
+    #     kind='bar'
+    # )
+    # print(data)
+
     # lucaot.head(15).groupby('name').plot(kind='bar')
 
-    plt.show()
+
+    # Time spent in Learn
+    tsil = load_query('time-spent-in-learn')
+    print(tsil.head(10))
+    # plt.show()
 
     for db, session in sessions.items():
         session.close()
